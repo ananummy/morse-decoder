@@ -37,8 +37,41 @@ const MORSE_TABLE = {
     '-----':  '0',
 };
 
+const BINARY_MORSE_TABLE = {
+    '10': '.',
+    '11': '-',
+    '00': ''
+}
+
 function decode(expr) {
-    // write your solution here
+    const letterLength = 10
+    const space = '**********'
+    const regexp = new RegExp(`.{1,${letterLength}}`, 'g')
+    const letterArr = expr.match(regexp)
+    const resultArr = []
+    let engWord = ''
+    let morseLetter = ''
+
+    for(let l = 0; l < letterArr.length; l++){
+        let letter = letterArr[l]
+        morseLetter = ''
+        
+        if (letter === space){
+            resultArr.push(engWord)
+            resultArr.push(' ')
+            engWord = ''
+            continue
+        }
+        
+        for(let i = 0; i < letter.length-1; i += 2) {
+            morseLetter += BINARY_MORSE_TABLE[`${letter[i]}${letter[i+1]}`]
+        }
+        
+        engWord += MORSE_TABLE[morseLetter]
+
+    }
+    resultArr.push(engWord);
+    return resultArr.join('')
 }
 
 module.exports = {
